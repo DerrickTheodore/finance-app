@@ -1,3 +1,3 @@
 # finance-app
 
-Personal Finance App
+Personal Finance App (WIP)
