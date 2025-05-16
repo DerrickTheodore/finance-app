@@ -4,12 +4,8 @@
  * Module dependencies.
  */
 
-import debugLib from "debug";
 import * as http from "http";
-import { packageJson } from "../packageInfo.js";
 import app from "./app.js"; // Adjusted import path for app
-
-const debug = debugLib(`${packageJson.name}:server`);
 
 /**
  * Get port from environment and store in Express.
@@ -86,5 +82,5 @@ function onListening(): void {
     typeof addr === "string"
       ? "pipe " + addr
       : "port " + (addr ? addr.port : "unknown");
-  debug("Listening on " + bind);
+  console.log("Listening on " + bind);
 }

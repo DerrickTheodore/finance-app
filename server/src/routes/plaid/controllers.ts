@@ -1,15 +1,16 @@
-import Plaid, {
+import * as Plaid from "plaid";
+import {
   PlaidError as SDKPlaidErrorType,
   TransactionsGetResponse,
 } from "plaid";
 
 import {
   createLinkToken as createLinkTokenService,
-  PlaidError as CustomPlaidError,
+  PlaidError as CustomPlaidError, // Corrected import source
   exchangePublicToken as exchangePublicTokenService,
   getTransactions as getTransactionsService,
-} from "../../../vendors/plaid-lib/index.js";
-import type { AppRequestController, ErrorResponseModel } from "../types.js"; // Import common types
+} from "../../../../libs/dist/plaid/index.js"; // Changed to import from libs/plaid/index.js
+import type { AppRequestController, ErrorResponseModel } from "../../types.js"; // Import common types
 
 // Request Body and Query Param Interfaces
 interface CreateLinkTokenReqBody {
@@ -27,12 +28,15 @@ interface TransactionsQuery {
 
 // Response Interfaces
 interface LinkTokenResponse {
+  // This local interface might be causing confusion, SDK provides Plaid.LinkTokenCreateResponse
   link_token: string;
+  expiration: string;
+  request_id: string;
 }
 interface ExchangeTokenResponse {
   message: string;
 }
-// TransactionsGetResponse is imported from \'plaid\' for the success case
+// TransactionsGetResponse is imported from 'plaid' for the success case
 
 // Type guard for Plaid SDK errors
 function isSdkPlaidError(error: any): error is SDKPlaidErrorType {
@@ -48,7 +52,7 @@ function isSdkPlaidError(error: any): error is SDKPlaidErrorType {
 // Controller for POST /api/plaid/create_link_token
 export const createLinkTokenController: AppRequestController<
   unknown,
-  LinkTokenResponse | ErrorResponseModel,
+  Plaid.LinkTokenCreateResponse | ErrorResponseModel, // Use SDK's LinkTokenCreateResponse
   CreateLinkTokenReqBody,
   unknown
 > = async (req, res) => {
@@ -62,11 +66,12 @@ export const createLinkTokenController: AppRequestController<
       Plaid.Products.Auth,
       Plaid.Products.Transactions,
     ];
-    const linkToken = await createLinkTokenService({
+    const linkTokenResponse = await createLinkTokenService({
+      // Expect full response object
       userId,
       products: productsToRequest,
     });
-    res.status(200).json({ link_token: linkToken });
+    res.status(200).json(linkTokenResponse); // Send the full response object
   } catch (error) {
     if (error instanceof CustomPlaidError) {
       res.status(error.status_code || 500).json({

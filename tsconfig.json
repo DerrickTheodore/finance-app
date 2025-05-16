@@ -1,0 +1,9 @@
+{
+  "files": [], // Solution-style tsconfig should not include files directly
+  "references": [
+    { "path": "./server" },
+    { "path": "./client" },
+    { "path": "./infra" },
+    { "path": "./libs" }
+  ]
+}

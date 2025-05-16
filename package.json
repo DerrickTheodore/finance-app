@@ -1,0 +1,49 @@
+{
+  "name": "myfi-app-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "server",
+    "infra",
+    "libs",
+    "client"
+  ],
+  "main": "dist/app.js",
+  "scripts": {
+    "start-server": "node server/dist/index.js",
+    "build-server": "tsc -b server",
+    "dev-server": "LOG_LEVEL=debug tsx watch server/src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx ./infra/migrate.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@myfi/infra": "workspace:*",
+    "@myfi/libs": "workspace:*",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "debug": "^4.4.0",
+    "drizzle-orm": "^0.43.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.0",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "pino-pretty": "^13.0.0",
+    "plaid": "^33.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.17",
+    "@types/pg": "^8.15.1",
+    "dotenv": "^16.5.0",
+    "drizzle-kit": "^0.31.1",
+    "tsx": "^4.16.2",
+    "typescript": "^5.8.3"
+  }
+}

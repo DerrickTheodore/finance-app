@@ -1,0 +1,12 @@
+{
+  "name": "@myfi/infra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/schema.js",
+  "types": "./dist/schema.d.ts",
+  "exports": {
+    "./schema": "./dist/schema.js",
+    "./database/drizzle/db": "./dist/database/drizzle/db.js"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist", // Adjust if you have a different client build output
+    "rootDir": "./src",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext", // Common for client-side bundles
+    "target": "es2020"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../libs" } // If client uses shared libs
+  ]
+}

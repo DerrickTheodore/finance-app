@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "NodeNext",
+    "sourceMap": true,
+    "allowJs": true,
+    /* Added for project references and better modularity */
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "exclude": ["node_modules", "**/dist/**"]
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "."
+  },
+  "include": ["**/*.ts"],
+  "exclude": [
+    "./dist", // Explicitly exclude the output directory for this project
+    "node_modules", // Explicitly exclude node_modules for this project
+    "database/drizzle/drizzle.config.ts" // Exclude Drizzle config as it might have different module needs or run in a different context
+  ]
+}

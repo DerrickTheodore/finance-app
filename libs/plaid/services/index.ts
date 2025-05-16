@@ -14,7 +14,8 @@ interface CreateLinkTokenParams {
 
 export async function createLinkToken(
   params: CreateLinkTokenParams
-): Promise<string> {
+): Promise<PlaidNode.LinkTokenCreateResponse> {
+  // Return the data part of the response
   const { userId, products } = params;
 
   if (
@@ -37,7 +38,7 @@ export async function createLinkToken(
 
   try {
     const response = await plaidClient.linkTokenCreate(request);
-    return response.data.link_token;
+    return response.data; // Access the data property of the Axios response
   } catch (error) {
     throw PlaidError.fromCatch(error);
   }
@@ -56,8 +57,8 @@ export async function exchangePublicToken(
       public_token: publicToken,
     });
     return {
-      accessToken: response.data.access_token,
-      itemId: response.data.item_id,
+      accessToken: response.data.access_token, // Access via response.data
+      itemId: response.data.item_id, // Access via response.data
     };
   } catch (error) {
     throw PlaidError.fromCatch(error);
@@ -89,7 +90,7 @@ export async function getTransactions(
   };
   try {
     const response = await plaidClient.transactionsGet(request);
-    return response.data;
+    return response.data; // Access the data property of the Axios response
   } catch (error) {
     throw new PlaidError("An unknown error occurred.");
   }
