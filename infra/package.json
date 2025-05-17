@@ -5,8 +5,13 @@
   "type": "module",
   "main": "./dist/schema.js",
   "types": "./dist/schema.d.ts",
+  "scripts": {
+    "infra:db:drizzle:generate": "drizzle-kit generate --config=./database/drizzle/drizzle.config.ts",
+    "infra:db:drizzle:push": "drizzle-kit push --config=./database/drizzle/drizzle.config.ts",
+    "infra:db:drizzle:studio": "drizzle-kit studio"
+  },
   "exports": {
-    "./schema": "./dist/schema.js",
+    "./schema": "./dist/database/drizzle/schema.js",
     "./database/drizzle/db": "./dist/database/drizzle/db.js"
   }
 }

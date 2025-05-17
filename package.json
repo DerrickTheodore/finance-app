@@ -16,9 +16,9 @@
     "dev-server": "LOG_LEVEL=debug tsx watch server/src/index.ts",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx ./infra/migrate.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:generate": "npm run infra:db:drizzle:generate --prefix ./infra",
+    "db:push": "npm run infra:db:drizzle:push --prefix ./infra",
+    "db:studio": "npm run infra:db:drizzle:studio --prefix ./infra"
   },
   "dependencies": {
     "@myfi/infra": "workspace:*",

@@ -1,0 +1,10 @@
+{
+  "name": "@myfi/server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {},
+  "dependencies": {
+    "@myfi/infra": "workspace:*"
+  }
+}

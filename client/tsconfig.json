@@ -4,7 +4,7 @@
     "outDir": "./dist", // Adjust if you have a different client build output
     "rootDir": "./src",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext", // Common for client-side bundles
+    "module": "NodeNext", // Changed from "esnext"
     "target": "es2020"
   },
   "include": ["src/**/*.ts"],
