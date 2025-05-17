@@ -1,10 +1,10 @@
+import { db } from "@myfi/infra/database/drizzle/db";
+import { users } from "@myfi/infra/schema";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { pino } from "pino";
-import { db } from "../../../../infra/dist/database/drizzle/db.js";
-import { users } from "../../../../infra/dist/schema.js";
 
 const logger = pino(
   pino.transport({

@@ -6,10 +6,10 @@ import {
 
 import {
   createLinkToken as createLinkTokenService,
-  PlaidError as CustomPlaidError, // Corrected import source
+  PlaidError as CustomPlaidError,
   exchangePublicToken as exchangePublicTokenService,
   getTransactions as getTransactionsService,
-} from "../../../../libs/dist/plaid/index.js"; // Changed to import from libs/plaid/index.js
+} from "@myfi/libs/plaid";
 import type { AppRequestController, ErrorResponseModel } from "../../types.js"; // Import common types
 
 // Request Body and Query Param Interfaces
@@ -79,17 +79,13 @@ export const createLinkTokenController: AppRequestController<
         error_message: error.error_message,
         display_message: error.display_message,
       });
-    } else if (isSdkPlaidError(error)) {
-      const status = typeof error.status === "number" ? error.status : 500;
-      res.status(status).json({
-        error_code: error.error_code || error.error_type,
-        error_message: error.error_message,
-        display_message: error.display_message,
-      });
     } else {
-      const err = error as Error;
+      let errorMessage = "An unexpected server error occurred.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
       res.status(500).json({
-        error_message: err.message || "An unexpected server error occurred.",
+        error_message: errorMessage,
       });
     }
   }
@@ -122,17 +118,13 @@ export const exchangePublicTokenController: AppRequestController<
         error_message: error.error_message,
         display_message: error.display_message,
       });
-    } else if (isSdkPlaidError(error)) {
-      const status = typeof error.status === "number" ? error.status : 500;
-      res.status(status).json({
-        error_code: error.error_code || error.error_type,
-        error_message: error.error_message,
-        display_message: error.display_message,
-      });
     } else {
-      const err = error as Error;
+      let errorMessage = "An unexpected server error occurred.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
       res.status(500).json({
-        error_message: err.message || "An unexpected server error occurred.",
+        error_message: errorMessage,
       });
     }
   }
@@ -205,9 +197,12 @@ export const getTransactionsController: AppRequestController<
         });
       }
     } else {
-      const err = error as Error;
+      let errorMessage = "An unexpected server error occurred.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
       res.status(500).json({
-        error_message: err.message || "An unexpected server error occurred.",
+        error_message: errorMessage,
       });
     }
   }
