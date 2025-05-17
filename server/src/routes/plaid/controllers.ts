@@ -1,8 +1,5 @@
 import * as Plaid from "plaid";
-import {
-  PlaidError as SDKPlaidErrorType,
-  TransactionsGetResponse,
-} from "plaid";
+import { PlaidError as SDKPlaidErrorType } from "plaid";
 
 import {
   createLinkToken as createLinkTokenService,
@@ -10,33 +7,8 @@ import {
   exchangePublicToken as exchangePublicTokenService,
   getTransactions as getTransactionsService,
 } from "@myfi/libs/plaid";
-import type { AppRequestController, ErrorResponseModel } from "../../types.js"; // Import common types
-
-// Request Body and Query Param Interfaces
-interface CreateLinkTokenReqBody {
-  userId: string;
-}
-interface ExchangePublicTokenReqBody {
-  public_token: string;
-}
-interface TransactionsQuery {
-  access_token: string;
-  start_date: string;
-  end_date: string;
-  account_ids?: string;
-}
-
-// Response Interfaces
-interface LinkTokenResponse {
-  // This local interface might be causing confusion, SDK provides Plaid.LinkTokenCreateResponse
-  link_token: string;
-  expiration: string;
-  request_id: string;
-}
-interface ExchangeTokenResponse {
-  message: string;
-}
-// TransactionsGetResponse is imported from 'plaid' for the success case
+import { Request, Response } from "express";
+import { z } from "zod";
 
 // Type guard for Plaid SDK errors
 function isSdkPlaidError(error: any): error is SDKPlaidErrorType {
@@ -50,12 +22,10 @@ function isSdkPlaidError(error: any): error is SDKPlaidErrorType {
 }
 
 // Controller for POST /api/plaid/create_link_token
-export const createLinkTokenController: AppRequestController<
-  unknown,
-  Plaid.LinkTokenCreateResponse | ErrorResponseModel, // Use SDK's LinkTokenCreateResponse
-  CreateLinkTokenReqBody,
-  unknown
-> = async (req, res) => {
+export const createLinkTokenController = async (
+  req: Request,
+  res: Response
+) => {
   const { userId } = req.body;
   if (!userId) {
     res.status(400).json({ error_message: "User ID is required." });
@@ -92,12 +62,10 @@ export const createLinkTokenController: AppRequestController<
 };
 
 // Controller for POST /api/plaid/exchange_public_token
-export const exchangePublicTokenController: AppRequestController<
-  unknown,
-  ExchangeTokenResponse | ErrorResponseModel,
-  ExchangePublicTokenReqBody,
-  unknown
-> = async (req, res) => {
+export const exchangePublicTokenController = async (
+  req: Request,
+  res: Response
+) => {
   const { public_token } = req.body;
   if (!public_token) {
     res.status(400).json({ error_message: "Public token is required." });
@@ -130,72 +98,59 @@ export const exchangePublicTokenController: AppRequestController<
   }
 };
 
+// Define Zod schema for getTransactions query parameters
+export const GetTransactionsQuerySchema = z.object({
+  accessToken: z.string().min(1, "Access token is required."),
+  startDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Start date must be in YYYY-MM-DD format."),
+  endDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "End date must be in YYYY-MM-DD format."),
+  options: z
+    .object({
+      count: z.coerce.number().int().positive().optional(), // coerce to number
+      offset: z.coerce.number().int().nonnegative().optional(), // coerce to number
+    })
+    .optional(),
+});
+
 // Controller for GET /api/plaid/transactions
-export const getTransactionsController: AppRequestController<
-  unknown,
-  TransactionsGetResponse | ErrorResponseModel,
-  unknown,
-  TransactionsQuery
-> = async (req, res) => {
-  const { access_token, start_date, end_date, account_ids } = req.query;
-  if (!access_token) {
-    res.status(400).json({ error_message: "Access token is required." });
-    return;
-  }
-  if (!start_date || !end_date) {
-    res
-      .status(400)
-      .json({ error_message: "Start date and end date are required." });
-    return;
-  }
+export const getTransactionsController = async (
+  req: Request,
+  res: Response
+) => {
+  // The validated query will be on req.query thanks to the middleware
+  // For now, casting to unknown then to the inferred type.
+  const { accessToken, startDate, endDate, options } =
+    req.query as unknown as z.infer<typeof GetTransactionsQuerySchema>;
+
   try {
-    const accountIdsArray = account_ids ? account_ids.split(",") : undefined;
-    const transactionsData = await getTransactionsService({
-      accessToken: access_token,
-      startDate: start_date,
-      endDate: end_date,
-      accountIds: accountIdsArray,
+    const transactionsResponse = await getTransactionsService({
+      accessToken,
+      startDate,
+      endDate,
+      // options should be passed directly if it exists, or undefined otherwise
+      ...(options && {
+        count: options.count,
+        offset: options.offset,
+      }),
     });
-    res.status(200).json(transactionsData);
+    res.status(200).json(transactionsResponse);
   } catch (error) {
     if (error instanceof CustomPlaidError) {
-      if (
-        error.isTokenError &&
-        typeof error.isTokenError === "function" &&
-        error.isTokenError()
-      ) {
-        res.status(401).json({
-          error_code: error.error_code,
-          error_message: error.error_message,
-          display_message: error.display_message,
-          action_required: "REAUTHENTICATE",
-        });
-      } else {
-        res.status(error.status_code || 500).json({
-          error_code: error.error_code,
-          error_message: error.error_message,
-          display_message: error.display_message,
-        });
-      }
+      res.status(error.status_code || 500).json({
+        error_code: error.error_code,
+        error_message: error.error_message,
+        display_message: error.display_message,
+      });
     } else if (isSdkPlaidError(error)) {
-      if (
-        error.error_type === "ITEM_ERROR" &&
-        error.error_code === "ITEM_LOGIN_REQUIRED"
-      ) {
-        res.status(401).json({
-          error_code: error.error_code,
-          error_message: error.error_message,
-          display_message: error.display_message,
-          action_required: "REAUTHENTICATE_ITEM",
-        });
-      } else {
-        const status = typeof error.status === "number" ? error.status : 500;
-        res.status(status).json({
-          error_code: error.error_code || error.error_type,
-          error_message: error.error_message,
-          display_message: error.display_message,
-        });
-      }
+      // Handle Plaid SDK specific errors
+      res.status(error.status || 500).json({
+        error_code: error.error_code,
+        error_message: error.error_message,
+        display_message: (error as any).display_message || null, // Plaid SDK errors might not have display_message
+      });
     } else {
       let errorMessage = "An unexpected server error occurred.";
       if (error instanceof Error) {

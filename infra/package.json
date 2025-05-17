@@ -2,16 +2,19 @@
   "name": "@myfi/infra",
   "version": "1.0.0",
   "private": true,
+  "description": "",
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "exports": {
+    "./schema": "./dist/database/drizzle/schema.js",
+    "./database/drizzle/db": "./dist/database/drizzle/db.js"
+  },
   "main": "./dist/database/drizzle/schema.js",
   "types": "./dist/database/drizzle/schema.d.ts",
   "scripts": {
     "infra:db:drizzle:generate": "drizzle-kit generate --config=./database/drizzle/drizzle.config.ts",
     "infra:db:drizzle:push": "drizzle-kit push --config=./database/drizzle/drizzle.config.ts",
     "infra:db:drizzle:studio": "drizzle-kit studio"
-  },
-  "exports": {
-    "./schema": "./dist/database/drizzle/schema.js",
-    "./database/drizzle/db": "./dist/database/drizzle/db.js"
   }
 }
