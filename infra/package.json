@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "./dist/schema.js",
-  "types": "./dist/schema.d.ts",
+  "main": "./dist/database/drizzle/schema.js",
+  "types": "./dist/database/drizzle/schema.d.ts",
   "scripts": {
     "infra:db:drizzle:generate": "drizzle-kit generate --config=./database/drizzle/drizzle.config.ts",
     "infra:db:drizzle:push": "drizzle-kit push --config=./database/drizzle/drizzle.config.ts",

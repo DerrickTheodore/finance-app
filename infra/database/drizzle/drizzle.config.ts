@@ -7,7 +7,7 @@ var __filename = fileURLToPath(import.meta.url);
 var __dirname = path.dirname(__filename);
 
 const env_path = path.resolve(__dirname, "../../../.env");
-console.log("Loading environment variables from:", env_path);
+
 dotenv.config({ path: env_path });
 if (!process.env.DB_URL) {
   throw new Error("DB_URL is not set in .env file");

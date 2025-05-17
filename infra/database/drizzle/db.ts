@@ -7,8 +7,7 @@ import { fileURLToPath } from "url";
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = dirname(__filename);
 
-const env_path = path.resolve(__dirname, "../../../.env");
-console.log("Loading environment variables from:", env_path);
+const env_path = path.resolve(__dirname, "../../../../.env");
 
 dotenv.config({ path: env_path });
 
