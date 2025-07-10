@@ -3,12 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "./dist/plaid/index.js",
-  "types": "./dist/plaid/index.d.ts",
+  "main": "./dist/plaid/src/index.js",
+  "types": "./dist/plaid/src/index.d.ts",
   "exports": {
-    "./plaid": "./dist/plaid/index.js",
-    "./plaid/errors": "./dist/plaid/errors.js",
-    "./plaid/client": "./dist/plaid/client.js",
-    "./plaid/services": "./dist/plaid/services/index.js"
+    ".": {
+      "import": "./dist/plaid/src/index.js",
+      "types": "./dist/plaid/src/index.d.ts"
+    },
+    "./plaid": "./dist/plaid/src/index.js"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "plaid": "^33.0.0"
   }
 }

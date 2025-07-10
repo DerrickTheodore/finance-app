@@ -1,13 +1,14 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "composite": true,
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
   "include": ["**/*.ts"],
-  "exclude": [
-    "./dist", // Explicitly exclude the output directory for this project
-    "node_modules", // Explicitly exclude node_modules for this project
-    "database/drizzle/drizzle.config.ts" // Exclude Drizzle config as it might have different module needs or run in a different context
-  ]
+  "exclude": ["node_modules", "dist"]
 }

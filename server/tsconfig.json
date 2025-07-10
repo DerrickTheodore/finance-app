@@ -2,8 +2,14 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@myfi/infra/*": ["../infra/*"],
+      "@myfi/libs/*": ["../libs/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/types.ts"],
+  "include": ["src/**/*.ts", "types.ts"],
+  "exclude": ["node_modules"],
   "references": [{ "path": "../infra" }, { "path": "../libs" }]
 }

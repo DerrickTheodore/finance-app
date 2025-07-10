@@ -11,7 +11,7 @@ import app from "./app.js"; // Adjusted import path for app
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.SERVER_PORT || "3001");
 app.set("port", port);
 
 /**
@@ -64,7 +64,7 @@ function onError(error: NodeJS.ErrnoException): void {
     case "EACCES":
       console.error(bind + " requires elevated privileges");
       process.exit(1);
-    case "EADDRINUSE":
+    case "EADDRINUSED":
       console.error(bind + " is already in use");
       process.exit(1);
     default:

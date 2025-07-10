@@ -12,13 +12,18 @@ export const validateRequest =
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       if (validators.params) {
-        req.params = await validators.params.parseAsync(req.params);
+        (req as any).validatedParams = await validators.params.parseAsync(
+          req.params
+        );
+        // console.log('[validateRequest] req.params after validation:', JSON.stringify(req.params));
       }
       if (validators.body) {
-        req.body = await validators.body.parseAsync(req.body);
+        (req as any).validatedBody = await validators.body.parseAsync(req.body);
+        // console.log('[validateRequest] req.body after validation:', JSON.stringify(req.body));
       }
       if (validators.query) {
-        req.query = await validators.query.parseAsync(req.query);
+        const parsedQuery = await validators.query.parseAsync(req.query);
+        (req as any).validatedQuery = parsedQuery; // Use req.validatedQuery
       }
       next();
     } catch (error) {

@@ -4,41 +4,23 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start-server": "node server/dist/index.js",
-    "build-server": "tsc -b server",
-    "dev-server": "LOG_LEVEL=debug tsx watch server/src/index.ts",
+    "dev": "concurrently --names \"EXPRESS,NEXT\" --prefix-colors \"blue,green\" \"pnpm --filter server dev\" \"pnpm --filter client dev\"",
+    "build": "pnpm --filter infra build && pnpm --filter libs build && pnpm --filter server build && pnpm --filter client build",
+    "build-client": "pnpm --filter @myfi/client build",
+    "build-lib": "pnpm --filter @myfi/lib build",
+    "build-infra": "pnpm --filter @myfi/infra build",
+    "build-server": "pnpm --filter @myfi/server build",
+    "start-client": "pnpm --filter @myfi/client start",
+    "start-server": "pnpm --filter @myfi/server start",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:generate": "npm run infra:db:drizzle:generate --prefix ./infra",
-    "db:push": "npm run infra:db:drizzle:push --prefix ./infra",
-    "db:studio": "npm run infra:db:drizzle:studio --prefix ./infra"
-  },
-  "dependencies": {
-    "@myfi/infra": "workspace:^0.0.0",
-    "@myfi/libs": "workspace:^0.0.0",
-    "bcrypt": "^6.0.0",
-    "body-parser": "^2.2.0",
-    "debug": "^4.4.0",
-    "drizzle-orm": "^0.43.1",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.16.0",
-    "pino": "^9.6.0",
-    "pino-http": "^10.4.0",
-    "pino-pretty": "^13.0.0",
-    "plaid": "^33.0.0",
-    "zod": "^3.24.4"
+    "db:generate": "pnpm --filter @myfi/infra run db:drizzle:generate",
+    "db:push": "pnpm --filter @myfi/infra run db:drizzle:push",
+    "db:studio": "pnpm --filter @myfi/infra run db:drizzle:studio"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/body-parser": "^1.19.5",
-    "@types/express": "^5.0.1",
-    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.17",
-    "@types/pg": "^8.15.1",
-    "dotenv": "^16.5.0",
-    "drizzle-kit": "^0.31.1",
-    "tsx": "^4.16.2",
+    "concurrently": "^9.1.2",
     "typescript": "^5.8.3"
   }
 }
