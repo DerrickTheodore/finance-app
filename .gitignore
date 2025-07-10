@@ -35,3 +35,6 @@ tsconfig.tsbuildinfo
 
 # macOS
 .DS_Store
+
+# debugger configs
+.vscode/
