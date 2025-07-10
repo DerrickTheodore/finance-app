@@ -1,0 +1,44 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Root Dev Script (Client & Server)",
+      "runtimeExecutable": "pnpm",
+      "args": ["run", "dev"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Server",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMapPathOverrides": {
+        "${workspaceFolder}/server/dist/*": "${workspaceFolder}/server/src/*"
+      },
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/server/**",
+        "!**/node_modules/**"
+      ],
+      "remoteRoot": "${workspaceFolder}/server"
+    },
+    {
+      // New configuration for client-side debugging
+      "type": "chrome", // Or "msedge" for Microsoft Edge
+      "request": "launch",
+      "name": "Launch Client (Next.js) in Chrome",
+      "url": "http://localhost:3000", // URL of your Next.js app
+      "webRoot": "${workspaceFolder}/client", // Root of your client-side source files
+      "sourceMaps": true,
+      "skipFiles": [
+        "${workspaceFolder}/client/node_modules/**",
+        "<node_internals>/**"
+      ]
+    }
+  ]
+}
