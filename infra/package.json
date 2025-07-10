@@ -1,0 +1,62 @@
+{
+  "name": "@myfi/infra",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "exports": {
+    "./types": {
+      "import": "./types.js",
+      "types": "./types.d.ts"
+    },
+    "./database/drizzle/schema": {
+      "import": "./dist/database/drizzle/schema/index.js",
+      "types": "./dist/database/drizzle/schema/index.d.ts"
+    },
+    "./database/drizzle/schema/models": {
+      "import": "./dist/database/drizzle/schema/models.js",
+      "types": "./dist/database/drizzle/schema/models.d.ts"
+    },
+    "./database/drizzle/schema/types": {
+      "import": "./dist/database/drizzle/schema/types.js",
+      "types": "./dist/database/drizzle/schema/types.d.ts"
+    },
+    "./database/drizzle/db": {
+      "import": "./dist/database/drizzle/db.js",
+      "types": "./dist/database/drizzle/db.d.ts"
+    },
+    "./logger": {
+      "import": "./dist/logger/index.js",
+      "types": "./dist/logger/index.d.ts"
+    },
+    "./database/drizzle/orm": {
+      "import": "./dist/database/drizzle/orm/index.js",
+      "types": "./dist/database/drizzle/orm/index.d.ts"
+    },
+    "./crypto": {
+      "import": "./dist/crypto/index.js",
+      "types": "./dist/crypto/index.d.ts"
+    }
+  },
+  "main": "./dist/database/drizzle/schema.js",
+  "types": "./dist/database/drizzle/schema.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "db:drizzle:generate": "drizzle-kit generate --config=./database/drizzle/drizzle.config.ts",
+    "db:drizzle:push": "drizzle-kit push --config=./database/drizzle/drizzle.config.ts",
+    "db:drizzle:studio": "drizzle-kit studio --config=./database/drizzle/drizzle.config.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.43.1",
+    "pg": "^8.16.0",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.1",
+    "dotenv": "^16.5.0",
+    "drizzle-kit": "^0.31.1"
+  }
+}

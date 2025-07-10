@@ -1,0 +1,21 @@
+{
+  "name": "@myfi/libs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/plaid/src/index.js",
+  "types": "./dist/plaid/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/plaid/src/index.js",
+      "types": "./dist/plaid/src/index.d.ts"
+    },
+    "./plaid": "./dist/plaid/src/index.js"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "plaid": "^33.0.0"
+  }
+}

@@ -1,2 +1,38 @@
-# macOS
-.DS_Store
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variables file
+.env
+
+# dist files
+dist/
+
+# debugger configs
+.vscode/
+
+# typescript
+tsconfig.tsbuildinfo

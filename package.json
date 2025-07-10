@@ -1,0 +1,26 @@
+{
+  "name": "myfi-app-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently --names \"EXPRESS,NEXT\" --prefix-colors \"blue,green\" \"pnpm --filter server dev\" \"pnpm --filter client dev\"",
+    "build": "pnpm --filter infra build && pnpm --filter libs build && pnpm --filter server build && pnpm --filter client build",
+    "build-client": "pnpm --filter @myfi/client build",
+    "build-lib": "pnpm --filter @myfi/lib build",
+    "build-infra": "pnpm --filter @myfi/infra build",
+    "build-server": "pnpm --filter @myfi/server build",
+    "start-client": "pnpm --filter @myfi/client start",
+    "start-server": "pnpm --filter @myfi/server start",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "pnpm --filter @myfi/infra run db:drizzle:generate",
+    "db:push": "pnpm --filter @myfi/infra run db:drizzle:push",
+    "db:studio": "pnpm --filter @myfi/infra run db:drizzle:studio"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "concurrently": "^9.1.2",
+    "typescript": "^5.8.3"
+  }
+}

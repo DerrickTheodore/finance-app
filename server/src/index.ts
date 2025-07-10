@@ -4,18 +4,14 @@
  * Module dependencies.
  */
 
-import debugLib from "debug";
 import * as http from "http";
-import { packageJson } from "../packageInfo.js";
 import app from "./app.js"; // Adjusted import path for app
-
-const debug = debugLib(`${packageJson.name}:server`);
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(process.env.SERVER_PORT || "3001");
 app.set("port", port);
 
 /**
@@ -68,7 +64,7 @@ function onError(error: NodeJS.ErrnoException): void {
     case "EACCES":
       console.error(bind + " requires elevated privileges");
       process.exit(1);
-    case "EADDRINUSE":
+    case "EADDRINUSED":
       console.error(bind + " is already in use");
       process.exit(1);
     default:
@@ -86,5 +82,5 @@ function onListening(): void {
     typeof addr === "string"
       ? "pipe " + addr
       : "port " + (addr ? addr.port : "unknown");
-  debug("Listening on " + bind);
+  console.log("Listening on " + bind);
 }

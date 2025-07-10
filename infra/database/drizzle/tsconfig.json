@@ -1,0 +1,15 @@
+{
+  "extends": "../../../tsconfig.base.json", // Corrected path
+  "compilerOptions": {
+    "outDir": "./dist", // Keep if specific output for drizzle utils is needed, else remove if infra's root tsconfig handles it.
+    "rootDir": ".",
+    "esModuleInterop": true, // For 'path' import in db.ts
+    "module": "NodeNext", // For import.meta in drizzle.config.ts and db.ts
+    "moduleResolution": "NodeNext",
+    "composite": true // If this is also a referenced project, otherwise can be false or removed.
+  },
+  "include": [
+    "**/*.ts" // Include all .ts files in this directory
+  ],
+  "exclude": ["./dist", "node_modules"]
+}
