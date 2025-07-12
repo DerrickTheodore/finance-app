@@ -2,6 +2,7 @@ import { PlaidItemWithAccounts } from "@myfi/server/types";
 import React from "react";
 import styles from "../../app/page.module.css";
 import EmptyState from "../../components/EmptyState";
+import LinkAccountButton from "../../components/LinkAccountButton";
 
 interface Props {
   linkedItems: PlaidItemWithAccounts[];
@@ -29,6 +30,7 @@ const LinkedInstitutionsSection: React.FC<Props> = ({
       <EmptyState
         message="No bank accounts linked yet. Link an institution to get started."
         className={styles.section}
+        action={<LinkAccountButton />}
       />
     )}
     {!fetchItemsError && linkedItems.length > 0 && (

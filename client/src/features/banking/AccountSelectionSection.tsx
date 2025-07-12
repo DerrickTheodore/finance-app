@@ -1,3 +1,4 @@
+import LinkAccountButton from "@/components/LinkAccountButton";
 import type { PlaidAccount as Account } from "@myfi/server/types";
 import React from "react";
 import styles from "../../app/page.module.css";
@@ -21,6 +22,7 @@ const AccountSelectionSection: React.FC<Props> = ({
       <EmptyState
         message="No accounts found for this institution. Please link an account to get started."
         className={styles.section}
+        action={<LinkAccountButton />}
       />
     );
   }
