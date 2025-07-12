@@ -19,9 +19,7 @@ const CategoriesManager: React.FC = () => {
 
   const { user } = useAuth();
   // Only call useCategories if user is present (for Suspense safety)
-  const categoriesResult = user
-    ? useCategories()
-    : { data: [], isLoading: false, error: null };
+  const categoriesResult = useCategories();
   const categories = categoriesResult.data || [];
   const isLoading = categoriesResult.isLoading;
   const error = categoriesResult.error;

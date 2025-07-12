@@ -10,6 +10,10 @@ async function fetchCategoriesAPI(): Promise<Category[]> {
   const url = `${getApiBaseUrl()}/api/categories`;
   const response = await fetch(url);
   if (!response.ok) {
+    if (response.status === 401 && typeof window === "undefined") {
+      // During build/prerender, just return empty data for unauthorized
+      return [];
+    }
     const errorData = await response.text();
     throw new Error(errorData || "Network response was not ok");
   }

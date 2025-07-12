@@ -37,7 +37,7 @@ async function unlinkCategoryAPI(transactionId: number, categoryId: number) {
   return response.json();
 }
 
-export function useTransactionCategories(enabled: boolean = true) {
+export function useTransactionCategories() {
   const queryClient = useQueryClient();
 
   const assignMutation = useMutation<

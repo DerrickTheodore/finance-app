@@ -3,7 +3,7 @@ import { TransactionWithCategories } from "@myfi/server/types";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 async function fetchTransactionsAPI(params: {
-  plaidItemId: string;
+  plaidItemId?: string;
   accountIds: string[];
   startDate: string;
   endDate: string;
@@ -32,13 +32,12 @@ async function fetchTransactionsAPI(params: {
 }
 
 export function useTransactions(params: {
-  plaidItemId: string;
+  plaidItemId?: string;
   accountIds: string[];
   startDate: string;
   endDate: string;
 }) {
   const { plaidItemId, accountIds, startDate, endDate } = params;
-
   return useSuspenseQuery<TransactionWithCategories[], Error>({
     queryKey: ["transactions", plaidItemId, accountIds, startDate, endDate],
     queryFn: () =>

@@ -6,7 +6,6 @@ import type { ChartData } from "../../hooks/useCategoryTotals";
 
 interface Props {
   pieData: ChartData[];
-  categories: any[];
 }
 
 const TransactionCategoryPieChartSection: React.FC<Props> = ({ pieData }) => {

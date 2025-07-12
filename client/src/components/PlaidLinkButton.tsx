@@ -50,7 +50,8 @@ const PlaidLinkButton: React.FC<PlaidLinkButtonProps> = ({ onItemsLinked }) => {
       }
     } catch (error) {
       setErrorState(
-        "An unexpected error occurred while initializing Plaid Link."
+        "An unexpected error occurred while initializing Plaid Link: " +
+          (error instanceof Error ? error.message : "Unknown error")
       );
     } finally {
       setIsLoading(false);

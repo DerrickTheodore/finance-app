@@ -1,6 +1,13 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import {
+  Category,
+  PlaidItemWithAccounts,
+  TransactionCategory,
+  TransactionWithCategories,
+} from "@myfi/server/types";
+import { UseMutationResult } from "@tanstack/react-query";
 import { Suspense, useState } from "react";
 import { useAppState } from "../../context/AppStateContext";
 import DateRangeSelector from "../../features/banking/DateRangeSelector";
@@ -12,12 +19,24 @@ import styles from "../page.module.css";
 
 // Pure presentational component for transactions UI
 interface TransactionsViewUIProps {
-  transactions: any[]; // Replace any with Transaction[] from your types
-  categories: any[]; // Replace any with Category[] from your types
+  transactions: TransactionWithCategories[];
+  categories: Category[];
   isFetchingTransactions: boolean;
   isFetchingCategories: boolean;
-  assignMutation: any; // Replace with proper mutation type
-  unlinkMutation: any; // Replace with proper mutation type
+  assignMutation: UseMutationResult<
+    TransactionCategory,
+    Error,
+    {
+      transactionId: number;
+      categoryId: number;
+      selectElement?: HTMLSelectElement;
+    }
+  >;
+  unlinkMutation: UseMutationResult<
+    { message: string },
+    Error,
+    { transactionId: number; categoryId: number }
+  >;
   transactionFetchError: Error | null;
   startDate: string;
   endDate: string;
@@ -77,13 +96,25 @@ function TransactionsViewUI({
 
 // Container component for data logic
 function TransactionsSuspenseView(props: {
-  selectedItem: any;
+  selectedItem: PlaidItemWithAccounts | null;
   selectedAccountIds: string[];
   startDate: string;
   endDate: string;
-  assignMutation: any;
-  unlinkMutation: any;
-  categories: any[];
+  assignMutation: UseMutationResult<
+    TransactionCategory,
+    Error,
+    {
+      transactionId: number;
+      categoryId: number;
+      selectElement?: HTMLSelectElement;
+    }
+  >;
+  unlinkMutation: UseMutationResult<
+    { message: string },
+    Error,
+    { transactionId: number; categoryId: number }
+  >;
+  categories: Category[];
   isFetchingCategories: boolean;
   onStartDateChange: (date: string) => void;
   onEndDateChange: (date: string) => void;
@@ -138,7 +169,7 @@ function TransactionsSuspenseView(props: {
 export default function TransactionsView() {
   const { selectedItem, selectedAccountIds } = useAppState();
   const { user } = useAuth();
-  const { assignMutation, unlinkMutation } = useTransactionCategories(!!user);
+  const { assignMutation, unlinkMutation } = useTransactionCategories();
   const [startDate, setStartDate] = useState<string>(() => {
     const d = new Date();
     d.setDate(d.getDate() - 30);
@@ -149,9 +180,7 @@ export default function TransactionsView() {
     return d.toISOString().split("T")[0];
   });
   // Only call useCategories if user is present
-  const categoriesResult = user
-    ? useCategories()
-    : { data: [], isFetching: false };
+  const categoriesResult = useCategories();
   const categories = categoriesResult.data || [];
   const isFetchingCategories = categoriesResult.isFetching;
 
