@@ -173,7 +173,7 @@ export const transactionRepository = (db: typeof DB) => ({
     const total = totalCountResult[0]?.value ?? 0;
 
     return {
-      data: data.map((t) => ({
+      data: data.map<ApiTransaction>((t) => ({
         id: t.id,
         plaidTransactionId: t.plaidTransactionId,
         plaidAccountId: t.plaidAccountId,
@@ -229,7 +229,7 @@ export const transactionRepository = (db: typeof DB) => ({
       return null;
     }
     const t = result[0];
-    return {
+    const transaction: ApiTransaction = {
       id: t.id,
       plaidTransactionId: t.plaidTransactionId,
       plaidAccountId: t.plaidAccountId,
@@ -251,8 +251,10 @@ export const transactionRepository = (db: typeof DB) => ({
       country: t.country,
       createdAt: t.createdAt.toISOString(), // Convert Date to string
       updatedAt: t.updatedAt.toISOString(), // Convert Date to string
-      categories: (t.categories || []) as Category[], // Ensure categories is Category[]
+      categories: t.categories || [], // Ensure categories is Category[]
     };
+
+    return transaction;
   },
 
   async linkTransactionToCategory(

@@ -33,9 +33,3 @@ export interface PaginatedTransactions {
     totalPages: number;
   };
 }
-
-// Example client-specific types
-export interface ClientConfig {
-  apiBaseUrl: string;
-  plaidEnv: "sandbox" | "development" | "production";
-}
