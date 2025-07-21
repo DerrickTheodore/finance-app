@@ -1,17 +1,21 @@
 import { db } from "@myfi/infra/database/drizzle/db";
 import { eq } from "@myfi/infra/database/drizzle/orm";
-import { users } from "@myfi/infra/database/drizzle/schema/models";
+import { User, users } from "@myfi/infra/database/drizzle/schema/models";
 
 // Renamed from findUser to findUserByEmail
-export async function findUserByEmail({ email }: { email: string }) {
-  const result = await db
+export async function findUserByEmail({
+  email,
+}: {
+  email: string;
+}): Promise<User | null> {
+  const [user] = await db
     .select()
     .from(users)
     .where(eq(users.email, email))
     .limit(1);
-  return result[0];
-}
 
+  return user || null; // Return null if no user found
+}
 // New function to find a user by their ID
 export async function findUserById({ id }: { id: string }) {
   const numericId = parseInt(id, 10);
@@ -33,7 +37,7 @@ export async function createUser({
 }: {
   email: string;
   password: string;
-}) {
+}): Promise<User> {
   const [user] = await db.insert(users).values({ email, password }).returning();
   return user;
 }

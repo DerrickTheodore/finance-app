@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./types": {
-      "import": "./types.js",
-      "types": "./types.d.ts"
+    ".": {
+      "import": "./types/api/index.js",
+      "types": "./types/api/index.d.ts"
     }
   },
   "dependencies": {
@@ -33,7 +33,7 @@
     "tsx": "^4.16.2"
   },
   "scripts": {
-    "dev": "LOG_LEVEL=debug tsx watch src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc -b"
   }

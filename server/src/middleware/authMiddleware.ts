@@ -1,7 +1,7 @@
-import { AuthenticatedRequest, AuthenticatedUser } from "@myfi/server/types";
-import { NextFunction, Response } from "express";
-import jwt from "jsonwebtoken";
-import { findUserById } from "../repositories/user.js";
+import { userRepository } from "@/repositories/users/index.js";
+import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -10,13 +10,8 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
-interface JwtPayload {
-  userId: string; // Changed from id to userId to match JWT creation
-  email: string; // Added email as it was in JWT creation
-}
-
-export const protect = async (
-  req: AuthenticatedRequest, // Explicitly use AuthenticatedRequest
+export const authorize = async (
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -27,9 +22,18 @@ export const protect = async (
     return; // Explicit return
   }
 
+  if (req.db === undefined) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Database connection is required but not found in request",
+    });
+    return;
+  }
+
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    const user = await findUserById({ id: decoded.userId }); // Changed to findUserById
+    const user = await userRepository(req.db).findUserById({
+      id: decoded.userId,
+    }); // Using the direct function
     if (!user) {
       res.status(401).json({ message: "Not authorized" });
       return; // Explicit return
@@ -38,7 +42,7 @@ export const protect = async (
     req.user = {
       id: user.id.toString(),
       // email: user.email // Optionally add email if AuthenticatedUser includes it
-    } as AuthenticatedUser;
+    };
 
     next();
   } catch (error) {
@@ -47,3 +51,5 @@ export const protect = async (
     return; // Explicit return
   }
 };
+
+export default authorize;

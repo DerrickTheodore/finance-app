@@ -1,10 +1,10 @@
-import { Category, NewCategory } from "@myfi/server/types";
+// Removed import from @myfi/infra/database/drizzle/schema
 import React, { useState } from "react";
 import { useCreateCategory, useUpdateCategory } from "../hooks/useCategories";
 
 interface CategoryFormProps {
-  category?: Category | null;
-  onSave: (category: Category) => void;
+  category?: any;
+  onSave: (category: any) => void;
   onCancel: () => void;
   isSaving: boolean;
 }
@@ -40,7 +40,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         }
       );
     } else {
-      createCategoryMutation.mutate(categoryData as NewCategory, {
+      createCategoryMutation.mutate(categoryData as any, {
         onSuccess: (savedCategory) => {
           onSave(savedCategory);
         },

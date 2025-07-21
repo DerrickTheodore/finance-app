@@ -1,13 +1,8 @@
 import { getApiBaseUrl } from "@/lib/utils";
-import {
-  MessageResponse,
-  PlaidItemModel,
-  PlaidItemWithAccounts,
-} from "@myfi/server/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-const fetchLinkedItemsData = async (): Promise<PlaidItemWithAccounts[]> => {
+const fetchLinkedItemsData = async (): Promise<any[]> => {
   const url = `${getApiBaseUrl()}/api/plaid/items`;
   const response = await fetch(url);
   if (!response.ok) {
@@ -22,7 +17,7 @@ const fetchLinkedItemsData = async (): Promise<PlaidItemWithAccounts[]> => {
   return responseData.plaidItems || [];
 };
 
-async function deleteItemAPI(itemPlaidId: string): Promise<MessageResponse> {
+async function deleteItemAPI(itemPlaidId: string): Promise<any> {
   const url = `${getApiBaseUrl()}/api/plaid/items/${itemPlaidId}`;
   const response = await fetch(url, {
     method: "DELETE",
@@ -47,7 +42,7 @@ export function useLinkedItems(enabled: boolean = true) {
     await queryClient.invalidateQueries({ queryKey: ["linkedItems"] });
   }, [queryClient]);
 
-  const setLinkedItems = (newItems: PlaidItemModel[]) => {
+  const setLinkedItems = (newItems: any[]) => {
     queryClient.setQueryData(["linkedItems"], newItems);
   };
 
@@ -56,7 +51,7 @@ export function useLinkedItems(enabled: boolean = true) {
 
 export function useDeleteItem() {
   const queryClient = useQueryClient();
-  return useMutation<MessageResponse, Error, string>({
+  return useMutation<any, Error, string>({
     mutationFn: deleteItemAPI,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["linkedItems"] });

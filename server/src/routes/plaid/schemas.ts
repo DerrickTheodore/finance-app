@@ -67,3 +67,7 @@ export const ExchangePublicTokenBody = z.object({
 
 // Define Zod schema for createLinkToken request body (expects an empty object or specific, optional params)
 export const CreateLinkTokenBody = z.object({}).strict(); // Strict ensures no extra properties are allowed
+
+export const DeletePlaidItemParams = z.object({
+  plaidItemId: z.string().min(1, "Plaid Item ID is required."),
+});

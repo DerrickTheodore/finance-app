@@ -1,8 +1,8 @@
-import { Category } from "@myfi/server/types";
 import React from "react";
+import { Category } from "types";
 
 interface CategoryRowProps {
-  category: Category;
+  category: any;
   onEdit: (category: Category) => void;
   onDelete: (categoryId: number) => void;
   isDeleting: boolean;

@@ -5,7 +5,6 @@ import express from "express";
 import { pinoHttp, stdSerializers } from "pino-http"; // Import stdSerializers
 import { attachDb } from "./middleware/dbMiddleware.js"; // Import attachDb
 import routes from "./routes/index.js";
-// import { protect } from './middleware/authMiddleware.js'; // Import protect middleware
 
 const httpLogger = pinoHttp({
   logger,
@@ -78,11 +77,6 @@ app.use((req, res, next) => {
 
 app.use(httpLogger);
 app.use(attachDb); // Use attachDb middleware
-
-// Example of how to protect all routes under /api/plaid (or any other path)
-// app.use('/api/plaid', protect); // All plaid routes will now require authentication
-// If you want to protect all routes, place it before app.use("/api", routes);
-// app.use(protect) // This would protect all routes defined after it.
 
 app.use("/api", routes);
 

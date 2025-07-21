@@ -1,10 +1,9 @@
-import { Category } from "@myfi/server/types";
 import React from "react";
-import TransactionRow, { TransactionWithCategories } from "./TransactionRow";
+import TransactionRow from "./TransactionRow";
 
 interface TransactionListProps {
-  transactions: TransactionWithCategories[];
-  allCategories: Category[];
+  transactions: any[];
+  allCategories: any[];
   onLinkCategory: (transactionId: number, categoryId: number) => void;
   onUnlinkCategory: (transactionId: number, categoryId: number) => void;
   isLoading?: boolean;

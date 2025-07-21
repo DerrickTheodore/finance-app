@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { PlaidItemWithAccounts } from "@myfi/server/types";
+
 import {
   createContext,
   ReactNode,
@@ -12,8 +12,8 @@ import {
 import { useLinkedItems } from "../hooks/useLinkedItems";
 
 interface StateContextType {
-  selectedItem: PlaidItemWithAccounts | null;
-  setSelectedItem: (item: PlaidItemWithAccounts | null) => void;
+  selectedItem: any | null;
+  setSelectedItem: (item: any | null) => void;
   selectedAccountIds: string[];
   setSelectedAccountIds: (accountIds: string[]) => void;
   handleSelectItem: (itemId: string) => void;
@@ -25,8 +25,7 @@ const StateContext = createContext<StateContextType | undefined>(undefined);
 export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const { linkedItems } = useLinkedItems(!!user);
-  const [selectedItem, setSelectedItem] =
-    useState<PlaidItemWithAccounts | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [selectedAccountIds, setSelectedAccountIds] = useState<string[]>([]);
 
   const handleSelectItem = useCallback(
