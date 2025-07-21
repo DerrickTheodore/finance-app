@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { protect as authMiddleware } from "../../middleware/authMiddleware.js";
+import { authorize } from "../../middleware/authMiddleware.js";
 import { validateRequest } from "../../middleware/validateRequest.js";
 import {
   getTransactionsHandler,
   linkTransactionToCategoryHandler,
   unlinkTransactionFromCategoryHandler,
-} from "./controllers.js";
+} from "./controllers/index.js";
 import {
   GetTransactionsQuerySchema,
   LinkTransactionCategorySchema,
@@ -14,7 +14,7 @@ import {
 
 const router: Router = Router();
 
-router.use(authMiddleware);
+router.use(authorize);
 
 router.get(
   "/",

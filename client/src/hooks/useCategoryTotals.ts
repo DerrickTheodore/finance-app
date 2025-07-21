@@ -1,17 +1,8 @@
-import type { Category, TransactionWithCategories } from "@myfi/server/types";
-
-export interface ChartData {
-  category: Category;
-  total: number;
-}
-
 /**
  * Custom hook to calculate category totals from a list of transactions.
  * Returns an array of objects formatted for use in pie charts.
  */
-export function useCategoryTotals(
-  transactions: TransactionWithCategories[]
-): ChartData[] {
+export function useCategoryTotals(transactions: any[]): any[] {
   const totals = transactions.reduce((acc, tx) => {
     if (tx.categories) {
       tx.categories.forEach((cat) => {
@@ -23,7 +14,7 @@ export function useCategoryTotals(
       });
     }
     return acc;
-  }, {} as Record<number, ChartData>);
+  }, {} as Record<number, any>);
 
   return Object.values(totals);
 }

@@ -1,23 +1,18 @@
-import { Category, Transaction } from "@myfi/server/types";
-import React from "react";
-
-export interface TransactionWithCategories extends Transaction {
-  categories: Category[];
-}
-
 interface TransactionRowProps {
-  transaction: TransactionWithCategories;
-  allCategories: Category[];
-  onLinkCategory: (transactionId: number, categoryId: number) => void;
-  onUnlinkCategory: (transactionId: number, categoryId: number) => void;
+  transaction: any;
+  allCategories: any[];
+  onLinkCategory: (transactionId: any, categoryId: any) => void;
+  onUnlinkCategory: (transactionId: any, categoryId: any) => void;
 }
+
+import React from "react";
 
 const TransactionRow: React.FC<TransactionRowProps> = ({
   transaction,
   allCategories,
   onLinkCategory,
   onUnlinkCategory,
-}) => {
+}: TransactionRowProps) => {
   const [selectedCategoryId, setSelectedCategoryId] =
     React.useState<string>("");
 
@@ -40,7 +35,7 @@ const TransactionRow: React.FC<TransactionRowProps> = ({
         }).format(parseFloat(transaction.amount))}
       </td>
       <td>
-        {transaction.categories?.map((cat) => (
+        {transaction.categories?.map((cat: any) => (
           <span
             key={cat.id}
             style={{
@@ -77,12 +72,12 @@ const TransactionRow: React.FC<TransactionRowProps> = ({
           <option value="">Assign Category</option>
           {allCategories
             .filter(
-              (cat) =>
+              (cat: any) =>
                 !transaction.categories?.find(
-                  (linkedCat) => linkedCat.id === cat.id
+                  (linkedCat: any) => linkedCat.id === cat.id
                 )
             )
-            .map((cat) => (
+            .map((cat: any) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
               </option>

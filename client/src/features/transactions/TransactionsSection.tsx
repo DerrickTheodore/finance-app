@@ -1,21 +1,17 @@
-import {
-  Category,
-  TransactionCategory,
-  TransactionWithCategories,
-} from "@myfi/server/types";
 import { UseMutationResult } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
+import { Category } from "types";
 import styles from "../../app/page.module.css";
 import EmptyState from "../../components/EmptyState";
 import TransactionRow from "./TransactionRow";
 
 interface Props {
-  transactions: TransactionWithCategories[];
+  transactions: any[];
   categories: Category[];
   isFetchingCategories: boolean;
   assignMutation: UseMutationResult<
-    TransactionCategory,
+    any,
     Error,
     {
       transactionId: number;

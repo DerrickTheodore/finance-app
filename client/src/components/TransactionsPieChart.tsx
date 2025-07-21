@@ -1,11 +1,10 @@
-import type { Category } from "@myfi/server/types";
 import { ArcElement, Chart, Legend, Tooltip } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
 type Props = {
-  data: { category: Category; total: number }[];
+  data: { category: any; total: number }[];
 };
 
 export default function TransactionsPieChart({ data }: Props) {

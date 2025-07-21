@@ -1,10 +1,12 @@
 import { getApiBaseUrl } from "@/lib/utils";
-import { Category, NewCategory } from "@myfi/server/types";
+// Removed import from @myfi/infra/database/drizzle/schema
+
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
+import { Category } from "types";
 
 async function fetchCategoriesAPI(): Promise<Category[]> {
   const url = `${getApiBaseUrl()}/api/categories`;
@@ -20,9 +22,7 @@ async function fetchCategoriesAPI(): Promise<Category[]> {
   return response.json();
 }
 
-async function createCategoryAPI(
-  categoryData: Omit<NewCategory, "id" | "createdAt" | "updatedAt" | "userId">
-): Promise<Category> {
+async function createCategoryAPI(categoryData: any): Promise<any> {
   const url = `${getApiBaseUrl()}/api/categories`;
   const response = await fetch(url, {
     method: "POST",
@@ -41,9 +41,7 @@ async function updateCategoryAPI({
   categoryData,
 }: {
   categoryId: number;
-  categoryData: Partial<
-    Omit<NewCategory, "id" | "createdAt" | "updatedAt" | "userId">
-  >;
+  categoryData: any;
 }): Promise<Category> {
   const url = `${getApiBaseUrl()}/api/categories/${categoryId}`;
   const response = await fetch(url, {
@@ -73,7 +71,7 @@ async function deleteCategoryAPI(
 }
 
 export function useCategories() {
-  return useSuspenseQuery<Category[], Error>({
+  return useSuspenseQuery<any[], Error>({
     queryKey: ["categories"],
     queryFn: fetchCategoriesAPI,
   });
@@ -81,11 +79,7 @@ export function useCategories() {
 
 export function useCreateCategory() {
   const queryClient = useQueryClient();
-  return useMutation<
-    Category,
-    Error,
-    Omit<NewCategory, "id" | "createdAt" | "updatedAt" | "userId">
-  >({
+  return useMutation<any, Error, any>({
     mutationFn: createCategoryAPI,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -100,9 +94,7 @@ export function useUpdateCategory() {
     Error,
     {
       categoryId: number;
-      categoryData: Partial<
-        Omit<NewCategory, "id" | "createdAt" | "updatedAt" | "userId">
-      >;
+      categoryData: any;
     }
   >({
     mutationFn: updateCategoryAPI,

@@ -1,13 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import {
-  Category,
-  PlaidItemWithAccounts,
-  TransactionCategory,
-  TransactionWithCategories,
-} from "@myfi/server/types";
-import { UseMutationResult } from "@tanstack/react-query";
+
 import { Suspense, useState } from "react";
 import { useAppState } from "../../context/AppStateContext";
 import DateRangeSelector from "../../features/banking/DateRangeSelector";
@@ -19,24 +13,12 @@ import styles from "../page.module.css";
 
 // Pure presentational component for transactions UI
 interface TransactionsViewUIProps {
-  transactions: TransactionWithCategories[];
-  categories: Category[];
+  transactions: any[];
+  categories: any[];
   isFetchingTransactions: boolean;
   isFetchingCategories: boolean;
-  assignMutation: UseMutationResult<
-    TransactionCategory,
-    Error,
-    {
-      transactionId: number;
-      categoryId: number;
-      selectElement?: HTMLSelectElement;
-    }
-  >;
-  unlinkMutation: UseMutationResult<
-    { message: string },
-    Error,
-    { transactionId: number; categoryId: number }
-  >;
+  assignMutation: any;
+  unlinkMutation: any;
   transactionFetchError: Error | null;
   startDate: string;
   endDate: string;
@@ -96,25 +78,13 @@ function TransactionsViewUI({
 
 // Container component for data logic
 function TransactionsSuspenseView(props: {
-  selectedItem: PlaidItemWithAccounts | null;
+  selectedItem: any;
   selectedAccountIds: string[];
   startDate: string;
   endDate: string;
-  assignMutation: UseMutationResult<
-    TransactionCategory,
-    Error,
-    {
-      transactionId: number;
-      categoryId: number;
-      selectElement?: HTMLSelectElement;
-    }
-  >;
-  unlinkMutation: UseMutationResult<
-    { message: string },
-    Error,
-    { transactionId: number; categoryId: number }
-  >;
-  categories: Category[];
+  assignMutation: any;
+  unlinkMutation: any;
+  categories: any;
   isFetchingCategories: boolean;
   onStartDateChange: (date: string) => void;
   onEndDateChange: (date: string) => void;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { Category } from "@myfi/server/types";
 import React, { useState } from "react";
 import CategoryForm from "../components/CategoryForm";
 import CategoryRow from "../components/CategoryRow";
@@ -12,10 +11,11 @@ import {
   useDeleteCategory,
   useUpdateCategory,
 } from "../hooks/useCategories";
+import { Category } from "types";
 
 const CategoriesManager: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editingCategory, setEditingCategory] = useState<any | null>(null);
 
   const { user } = useAuth();
   // Only call useCategories if user is present (for Suspense safety)

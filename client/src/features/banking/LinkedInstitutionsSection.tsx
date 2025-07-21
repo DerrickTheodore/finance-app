@@ -1,13 +1,12 @@
-import { PlaidItemWithAccounts } from "@myfi/server/types";
 import React from "react";
 import styles from "../../app/page.module.css";
 import EmptyState from "../../components/EmptyState";
 import LinkAccountButton from "../../components/LinkAccountButton";
 
 interface Props {
-  linkedItems: PlaidItemWithAccounts[];
+  linkedItems: any[];
   fetchItemsError: string | null;
-  selectedItem: PlaidItemWithAccounts | null;
+  selectedItem: any | null;
   isDeletingItem: boolean;
   onSelectItem: (itemId: string) => void;
   onDeleteItem: (itemId: string) => void;

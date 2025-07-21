@@ -1,11 +1,11 @@
 import LinkAccountButton from "@/components/LinkAccountButton";
-import type { PlaidAccount as Account } from "@myfi/server/types";
+
 import React from "react";
 import styles from "../../app/page.module.css";
 import EmptyState from "../../components/EmptyState";
 
 interface Props {
-  accounts: Account[];
+  accounts: any[];
   selectedAccountIds: string[];
   onAccountSelect: (accountId: string) => void;
   institutionName?: string | null;

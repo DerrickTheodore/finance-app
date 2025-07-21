@@ -1,5 +1,5 @@
 import { getApiBaseUrl } from "@/lib/utils";
-import { TransactionWithCategories } from "@myfi/server/types";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 async function fetchTransactionsAPI(params: {
@@ -28,7 +28,7 @@ async function fetchTransactionsAPI(params: {
     throw new Error(errorData || "Failed to fetch transactions");
   }
   const data = await response.json();
-  return data as TransactionWithCategories[];
+  return data as any[];
 }
 
 export function useTransactions(params: {
@@ -38,7 +38,7 @@ export function useTransactions(params: {
   endDate: string;
 }) {
   const { plaidItemId, accountIds, startDate, endDate } = params;
-  return useSuspenseQuery<TransactionWithCategories[], Error>({
+  return useSuspenseQuery<any[], Error>({
     queryKey: ["transactions", plaidItemId, accountIds, startDate, endDate],
     queryFn: () =>
       fetchTransactionsAPI({ plaidItemId, accountIds, startDate, endDate }),

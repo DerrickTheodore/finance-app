@@ -1,5 +1,5 @@
+import authorize from "@/middleware/authMiddleware.js";
 import { Router } from "express";
-import { protect as authMiddleware } from "../../middleware/authMiddleware.js";
 import { validateRequest } from "../../middleware/validateRequest.js";
 import {
   createCategory,
@@ -7,7 +7,7 @@ import {
   getCategories,
   getCategoryById,
   updateCategory,
-} from "./controllers.js";
+} from "./controllers/index.js";
 import {
   CategoryIdParamsSchema,
   CreateCategorySchema,
@@ -16,8 +16,7 @@ import {
 
 const router: Router = Router();
 
-// Apply auth middleware to all category routes
-router.use(authMiddleware);
+router.use(authorize); // Ensure the user is authenticated
 
 router.post(
   "/",

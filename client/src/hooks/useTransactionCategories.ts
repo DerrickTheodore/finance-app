@@ -1,5 +1,6 @@
 import { getApiBaseUrl } from "@/lib/utils";
-import { TransactionCategory } from "@myfi/server/types";
+// Removed import from @myfi/infra/database/drizzle/schema
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 async function assignCategoryAPI(transactionId: number, categoryId: number) {
@@ -41,7 +42,7 @@ export function useTransactionCategories() {
   const queryClient = useQueryClient();
 
   const assignMutation = useMutation<
-    TransactionCategory,
+    any,
     Error,
     {
       transactionId: number;

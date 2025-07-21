@@ -6,10 +6,17 @@
     "baseUrl": ".",
     "paths": {
       "@myfi/infra/*": ["../infra/*"],
-      "@myfi/libs/*": ["../libs/*"]
+      "@myfi/libs/*": ["../libs/*"],
+      "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "types.ts"],
+  "include": [
+    "src/**/*.ts",
+    "types.ts",
+    "src/routes/auth/controllers/index.ts",
+    "src/routes/categories/controllers/index.ts",
+    "src/routes/plaid/controller/index.js"
+  ],
   "exclude": ["node_modules"],
   "references": [{ "path": "../infra" }, { "path": "../libs" }]
 }
