@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { LoginBody } from "../schemas.js";
+import { LoginBody, LoginResponseSchema } from "../schemas.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -44,18 +44,30 @@ export const login = async (
 
     // Set token in cookie
     res.cookie("token", token, {
-      httpOnly: true,
+      /**
+       * TODO: Reanable httpOnly for security
+       * This is commented out for mobile clients that need to access the token directly
+       * but should be enabled in production for web clients
+       */
+      // httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 1000,
       path: "/",
     });
 
-    res.status(200).json({
-      message: "Login successful",
-      userId: user.id,
-      email: user.email,
-    });
+    const response = {
+      message: "Login successful" as const,
+      token: token, // Include token for mobile clients
+      user: {
+        id: user.id,
+        email: user.email,
+        created_at: user.createdAt,
+        updated_at: user.updatedAt,
+      },
+    };
+    LoginResponseSchema.parse(response);
+    res.status(200).json(response);
   } catch (error) {
     logger.error(new LoggableError(error, "Error during login"));
 

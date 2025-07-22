@@ -52,8 +52,13 @@ export const signup = async (
 
     const response = {
       message: "Signup successful" as const,
-      userId: newUser.id,
-      email: newUser.email,
+      token: token, // Include token for mobile clients
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        created_at: newUser.createdAt,
+        updated_at: newUser.updatedAt,
+      },
     };
     SignupResponseSchema.parse(response);
     res.status(201).json(response);

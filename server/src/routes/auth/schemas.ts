@@ -14,9 +14,24 @@ export const LoginBody = z.object({
   password: z.string().min(1, { message: "Password is required" }), // Or a specific min length if desired
 });
 
+// Define Zod schema for user object
+export const UserSchema = z.object({
+  id: z.number(),
+  email: z.string().email(),
+  created_at: z.date(),
+  updated_at: z.date(),
+});
+
 // Define Zod schema for signup response body
 export const SignupResponseSchema = z.object({
   message: z.literal("Signup successful"),
-  userId: z.number(),
-  email: z.string().email(),
+  token: z.string(),
+  user: UserSchema,
+});
+
+// Define Zod schema for login response body
+export const LoginResponseSchema = z.object({
+  message: z.literal("Login successful"),
+  token: z.string(),
+  user: UserSchema,
 });
