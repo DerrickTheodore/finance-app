@@ -1,0 +1,19 @@
+{
+	"name": "xcode build server",
+	"version": "0.2",
+	"bspVersion": "2.0",
+	"languages": [
+		"c",
+		"cpp",
+		"objective-c",
+		"objective-cpp",
+		"swift"
+	],
+	"argv": [
+		"/opt/homebrew/bin/xcode-build-server"
+	],
+	"workspace": "/Users/derricktheodore/app-library/finance-app/client/ios/MyFiApp.xcodeproj/project.xcworkspace",
+	"build_root": "/Users/derricktheodore/Library/Developer/Xcode/DerivedData/MyFiApp-cearzkxevevaskdroltwehnwsfow",
+	"scheme": "MyFiApp",
+	"kind": "xcode"
+}
