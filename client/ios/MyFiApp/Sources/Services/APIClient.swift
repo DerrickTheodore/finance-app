@@ -22,19 +22,37 @@ class APIClient {
         print("🔥🔥🔥 THIS CONFIRMS OUR CODE CHANGES ARE ACTIVE 🔥🔥🔥")
         print("🔥🔥🔥 IF YOU SEE LOCALHOST IN LOGS, CODE NOT UPDATED 🔥🔥🔥")
         
-        let config = URLSessionConfiguration.default
+        let config: URLSessionConfiguration = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 30
         config.timeoutIntervalForResource = 60
         self.session = URLSession(configuration: config)
         
         self.decoder = JSONDecoder()
         self.encoder = JSONEncoder()
-        
-        // Configure date formatters
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        decoder.dateDecodingStrategy = .formatted(dateFormatter)
-        encoder.dateEncodingStrategy = .formatted(dateFormatter)
+
+        // Custom ISO8601 formatter to handle fractional seconds (milliseconds)
+        let iso8601Formatter: ISO8601DateFormatter = ISO8601DateFormatter()
+        iso8601Formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let container: any SingleValueDecodingContainer = try decoder.singleValueContainer()
+            let dateString: String = try container.decode(String.self)
+            if let date: Date = iso8601Formatter.date(from: dateString) {
+                return date
+            } else {
+                // Defensive fallback: try parsing without fractional seconds in case the input is a non-standard ISO8601 string or the formatter fails unexpectedly
+                let fallbackFormatter: ISO8601DateFormatter = ISO8601DateFormatter()
+                fallbackFormatter.formatOptions = [.withInternetDateTime]
+                if let date: Date = fallbackFormatter.date(from: dateString) {
+                    return date
+                }
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid ISO8601 date: \(dateString)")
+            }
+        }
+        encoder.dateEncodingStrategy = .custom { date, encoder in
+            var container = encoder.singleValueContainer()
+            let dateString = iso8601Formatter.string(from: date)
+            try container.encode(dateString)
+        }
     }
     
     // MARK: - Generic Request Method
@@ -228,7 +246,7 @@ extension APIClient {
     }
     
     func exchangePublicToken(_ publicToken: String, metadata: PlaidMetadata) async throws -> MessageResponse {
-        let request = ExchangeTokenRequest(publicToken: publicToken, metadata: metadata)
+        let request: ExchangeTokenRequest = ExchangeTokenRequest(publicToken: publicToken, metadata: metadata)
         return try await makeRequest(
             endpoint: "/api/plaid/exchange-public-token",
             method: .POST,
