@@ -43,7 +43,7 @@
   "main": "./dist/database/drizzle/schema.js",
   "types": "./dist/database/drizzle/schema.d.ts",
   "scripts": {
-    "build": "tsc -b",
+    "build": "rm -rf dist && tsc -b",
     "db:drizzle:generate": "drizzle-kit generate --config=./database/drizzle/drizzle.config.ts",
     "db:drizzle:push": "drizzle-kit push --config=./database/drizzle/drizzle.config.ts",
     "db:drizzle:studio": "drizzle-kit studio --config=./database/drizzle/drizzle.config.ts"
