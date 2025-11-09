@@ -1,4 +1,4 @@
-# MyFi
+# Finance App
 
 ## Refactoring & Production-Readiness Checklist
 
@@ -7,7 +7,6 @@
     No direct cross-package imports: Only use public APIs/exports and path aliases.
     No business logic in client or server that could be shared: Move to libs.
     No DB or API code in libs or client.
-    No UI code outside client.
     Keep all migrations, schema, and DB utilities in infra.
 
 - All shared types are in a single location (e.g., libs/types or @myfi/types).
@@ -34,15 +33,6 @@
 - Structured logger (e.g., pino, winston) is integrated for all server logs.
 - Environment variable management and validation is handled (e.g., with dotenv or envsafe).
 - Rate limiting and CORS configuration are in place.
-
-### Client (Next.js) Improvements
-
-- Components are organized by feature (feature folders).
-- All data fetching and business logic is in hooks (e.g., useTransactions, useCategories).
-- Error and loading UI is centralized for a consistent user experience.
-- All interactive elements are accessible (labels, roles, keyboard navigation).
-- Responsive design and mobile support are implemented.
-- Consistent styling via CSS-in-JS or CSS modules.
 
 ### State Management
 
@@ -78,10 +68,3 @@
 - API is documented (e.g., OpenAPI/Swagger).
 - JSDoc/type comments are present for complex logic.
 - All environment variables and configuration options are documented.
-
-### UX & Feature Polish
-
-- Loading spinners and error messages are present for all async actions.
-- Confirmation dialogs exist for destructive actions (e.g., deleting accounts).
-- User feedback is provided for successful actions (e.g., toast notifications).
-- All forms have validation and helpful error messages.
